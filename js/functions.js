@@ -4,7 +4,7 @@
  * @param {number} maxLength - Максимальная длина
  * @return {boolean} - Проверяет, что длина строки меньше, либо равна максимальной длине
  */
-function lengthCheck (string, maxLength) {
+function lengthCheck(string, maxLength) {
   return string.length <= maxLength;
 }
 
@@ -15,7 +15,7 @@ lengthCheck('Функция для проверки длины строки', 21
  * @param {string} phrase - Проверяемая строка
  * @return {boolean} - Проверяет, что что строка является палиндромом (обратный порядок символов совпадает с прямым)
  */
-function palindromeCheck (phrase) {
+function palindromeCheck(phrase) {
   const normalize = phrase.toLowerCase().replaceAll(' ', '');
   let reversed = '';
 
@@ -33,7 +33,7 @@ palindromeCheck('Функция для проверки, является ли �
  * @param {string || number} source - Проверяемая строка
  * @return {boolean} - Извлекает из строки цифры и возвращает их в виде целого положительного числа
  */
-function numberExtraction (source) {
+function numberExtraction(source) {
   const normalize = source.toString().replaceAll(' ', '');
   let result = '';
 
