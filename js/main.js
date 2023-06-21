@@ -24,6 +24,7 @@ const DESCRIPTIONS = [
   'Фотография не загрузилась, но описать её надо...',
 ];
 
+
 /**
  * Функция для генерации случайного целого числа из заданного диапазона.
  * @param {number} min - Минимальное значение
@@ -77,6 +78,10 @@ function createPhotoDescription () {
     url: `photos/${photoUrl}.jpg`,
     description: getRandomArrayElement(DESCRIPTIONS),
     likes: getRandomInteger(15, 200),
-    comments: '',
+    comments: Array.from({length: getRandomInteger(0, 30)}, createComment),
   };
+}
+
+function PhotoDescriptions () {
+  return Array.from({length: 25}, createPhotoDescription);
 }
