@@ -27,13 +27,13 @@ const PHOTO_AMOUNT = 25;
 
 /**
  * Функция для генерации случайного целого числа из заданного диапазона.
- * @param {number} min - Минимальное значение
- * @param {number} max - Максимальное значение
- * @return {number} - Случайное целое число в диапазоне от min до max
+ * @param {number} a - Минимальное или максимальное значение
+ * @param {number} b - Минимальное или максимальное значение
+ * @return {number} - Случайное целое число в диапазоне между a и b
  */
-function getRandomInteger (min, max) {
-  const lower = Math.ceil(Math.min(min, max));
-  const upper = Math.floor(Math.max(min, max));
+function getRandomInteger (a, b) {
+  const lower = Math.ceil(Math.min(a, b));
+  const upper = Math.floor(Math.max(a, b));
   const result = Math.random() * (upper - lower + 1) + lower;
   return Math.floor(result);
 }
