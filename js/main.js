@@ -23,7 +23,7 @@ const DESCRIPTIONS = [
   'Передо мной необычная фотография.',
   'Фотография не загрузилась, но описать её надо...',
 ];
-
+const PHOTO_AMOUNT = 25;
 
 /**
  * Функция для генерации случайного целого числа из заданного диапазона.
@@ -47,19 +47,13 @@ function getRandomArrayElement (elements) {
   return elements[getRandomInteger(0, elements.length - 1)];
 }
 
-const photoId = (function(n) {
+const getPhotoId = (function(n) {
   return function() {
     n++;
     return n;
   };
 }(0));
-const photoUrl = (function(n) {
-  return function() {
-    n++;
-    return n;
-  };
-}(0));
-const commentId = (function(n) {
+const getCommentId = (function(n) {
   return function() {
     n += getRandomInteger(0, 100);
     return n;
@@ -68,7 +62,7 @@ const commentId = (function(n) {
 
 function createComment () {
   return {
-    id: commentId(),
+    id: getCommentId(),
     avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
     message: getRandomArrayElement(MESSAGES),
     name: getRandomArrayElement(NAMES),
@@ -76,9 +70,10 @@ function createComment () {
 }
 
 function createPhotoDescription () {
+  const PhotoId = getPhotoId();
   return {
-    id: photoId(),
-    url: `photos/${photoUrl()}.jpg`,
+    id: PhotoId,
+    url: `photos/${PhotoId}.jpg`,
     description: getRandomArrayElement(DESCRIPTIONS),
     likes: getRandomInteger(15, 200),
     comments: Array.from({length: getRandomInteger(0, 30)}, createComment),
@@ -86,7 +81,7 @@ function createPhotoDescription () {
 }
 
 function photoDescriptions () {
-  return Array.from({length: 25}, createPhotoDescription);
+  return Array.from({length: PHOTO_AMOUNT}, createPhotoDescription);
 }
 
 photoDescriptions();
