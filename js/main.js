@@ -47,25 +47,28 @@ function getRandomArrayElement (elements) {
   return elements[getRandomInteger(0, elements.length - 1)];
 }
 
-/**
- * Функция для генерации последовательных уникальных целых чисел.
- * @param {number} start - Начальное значение, по умолчанию равно 0
- * @return {number} - Уникальное целое число, последовательно увеличивающееся на 1
- */
-function getUniqueInteger (start = 0) {
-  let integer = start;
-  return function () {
-    return integer++;
+const photoId = (function(n) {
+  return function() {
+    n++;
+    return n;
   };
-}
-
-const photoId = getUniqueInteger();
-const photoUrl = getUniqueInteger();
-const commentId = getUniqueInteger(getRandomInteger(1, Infinity));
+}(0));
+const photoUrl = (function(n) {
+  return function() {
+    n++;
+    return n;
+  };
+}(0));
+const commentId = (function(n) {
+  return function() {
+    n += getRandomInteger(0, 100);
+    return n;
+  };
+}(getRandomInteger(0, 100)));
 
 function createComment () {
   return {
-    id: commentId,
+    id: commentId(),
     avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
     message: getRandomArrayElement(MESSAGES),
     name: getRandomArrayElement(NAMES),
@@ -74,14 +77,16 @@ function createComment () {
 
 function createPhotoDescription () {
   return {
-    id: photoId,
-    url: `photos/${photoUrl}.jpg`,
+    id: photoId(),
+    url: `photos/${photoUrl()}.jpg`,
     description: getRandomArrayElement(DESCRIPTIONS),
     likes: getRandomInteger(15, 200),
     comments: Array.from({length: getRandomInteger(0, 30)}, createComment),
   };
 }
 
-function PhotoDescriptions () {
+function photoDescriptions () {
   return Array.from({length: 25}, createPhotoDescription);
 }
+
+photoDescriptions();
