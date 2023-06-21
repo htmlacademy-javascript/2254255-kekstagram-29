@@ -1,4 +1,4 @@
-const MESSAGE = [
+const MESSAGES = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
   'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
@@ -15,6 +15,13 @@ const NAMES = [
   'Юлия',
   'Люпита',
   'Вашингтон',
+];
+const DESCRIPTIONS = [
+  'Передо мной интересная фотография.',
+  'Передо мной удивительная фотография.',
+  'Передо мной забавная фотография.',
+  'Передо мной необычная фотография.',
+  'Фотография не загрузилась, но описать её надо...',
 ];
 
 /**
@@ -39,21 +46,37 @@ function getRandomArrayElement (elements) {
   return elements[getRandomInteger(0, elements.length - 1)];
 }
 
-function createFotoDescription () {
-  return {
-    id: '',
-    url: '',
-    description: '',
-    likes: '',
-    comments: '',
+/**
+ * Функция для генерации последовательных уникальных целых чисел.
+ * @param {number} start - Начальное значение, по умолчанию равно 0
+ * @return {number} - Уникальное целое число, последовательно увеличивающееся на 1
+ */
+function getUniqueInteger (start = 0) {
+  let integer = start;
+  return function () {
+    return integer++;
   };
 }
 
+const photoId = getUniqueInteger();
+const photoUrl = getUniqueInteger();
+const commentId = getUniqueInteger(getRandomInteger(1, Infinity));
+
 function createComment () {
   return {
-    id: '',
-    avatar: '',
-    message: '',
-    name: '',
+    id: commentId,
+    avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
+    message: getRandomArrayElement(MESSAGES),
+    name: getRandomArrayElement(NAMES),
+  };
+}
+
+function createPhotoDescription () {
+  return {
+    id: photoId,
+    url: `photos/${photoUrl}.jpg`,
+    description: getRandomArrayElement(DESCRIPTIONS),
+    likes: getRandomInteger(15, 200),
+    comments: '',
   };
 }
