@@ -1,50 +1,15 @@
 /**
- * Функция для проверки длины строки.
- * @param {string} string - Проверяемая строка
- * @param {number} maxLength - Максимальная длина
- * @return {boolean} - Проверяет, что длина строки меньше, либо равна максимальной длине
+ * Функция для проверки возможности проведения встречи.
+ * @param {string} startOfDay - Время начала рабочего дня
+ * @param {string} endOfDay - Время завершения рабочего дня
+ * @param {string} startOfMeeting - Время начала встречи
+ * @param {number} lengthOfMeeting - Продолжительность встречи в минутах
+ * @return {boolean} - Проверка возможности проведения встречи
  */
-function lengthCheck(string, maxLength) {
-  return string.length <= maxLength;
-}
-
-lengthCheck('Функция для проверки длины строки', 21);
-
-/**
- * Функция для проверки, является ли строка палиндромом.
- * @param {string} phrase - Проверяемая строка
- * @return {boolean} - Проверяет, что что строка является палиндромом (обратный порядок символов совпадает с прямым)
- */
-function palindromeCheck(phrase) {
-  const normalize = phrase.toLowerCase().replaceAll(' ', '');
-  let reversed = '';
-
-  for (let i = 1; i <= normalize.length; i++) {
-    reversed += normalize.at(-i);
+export function scheduleCheck(startOfDay, endOfDay, startOfMeeting, lengthOfMeeting) {
+  const normalize = '2022-02-24 ';
+  if (new Date(normalize.concat(startOfDay)) <= new Date(normalize.concat(startOfMeeting))) {
+    return new Date(normalize.concat(endOfDay)) - new Date(normalize.concat(startOfMeeting)) >= lengthOfMeeting * 60000;
   }
-
-  return normalize === reversed;
+  return false;
 }
-
-palindromeCheck('Функция для проверки, является ли строка палиндромом');
-
-/**
- * Функция принимает строку, извлекает содержащиеся в ней цифры от 0 до 9 и возвращает их в виде целого положительного числа.
- * @param {string || number} source - Проверяемая строка
- * @return {boolean} - Извлекает из строки цифры и возвращает их в виде целого положительного числа
- */
-function numberExtraction(source) {
-  const normalize = source.toString().replaceAll(' ', '');
-  let result = '';
-
-  for (let i = 0; i < normalize.length; i++) {
-    const symbol = Number(normalize[i]);
-    if (Number.isNaN(symbol) === false) {
-      result += symbol;
-    }
-  }
-
-  return result;
-}
-
-numberExtraction('Функция принимает строку, извлекает содержащиеся в ней цифры от 0 до 9 и возвращает их в виде целого положительного числа');
