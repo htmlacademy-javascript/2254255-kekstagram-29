@@ -42,6 +42,10 @@ const CommentsAmount = {
 const getPhotoId = getIdGenerator();
 const getCommentId = getIdGenerator(getRandomInteger(0, 100), getRandomInteger(0, 100));
 
+/**
+ * Функция для генерации комментариев.
+ * @return {Object} - Объект с ключами id, avatar, message и name
+ */
 function createComment() {
   return {
     id: getCommentId(),
@@ -51,6 +55,10 @@ function createComment() {
   };
 }
 
+/**
+ * Функция для генерации описания фотографии.
+ * @return {Object} - Объект с ключами id, url, description, likes и массивом comments
+ */
 function createPhotoDescription() {
   const photoId = getPhotoId();
   return {
@@ -62,6 +70,11 @@ function createPhotoDescription() {
   };
 }
 
+/**
+ * Функция для генерации массива описаний фотографий.
+ * @param {number} photoAmount - Количество фотографий, значение по умолчанию PHOTO_AMOUNT
+ * @return {Object} - Массив описаний фотографий длинной photoAmount
+ */
 function createPhotoDescriptions(photoAmount = PHOTO_AMOUNT) {
   return Array.from({length: photoAmount}, createPhotoDescription);
 }
