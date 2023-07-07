@@ -1,3 +1,5 @@
+import {openFullSizePhoto} from './full-size.js';
+
 const thumbnailTemplate = document.querySelector('#picture')
   .content
   .querySelector('.picture');
@@ -16,6 +18,9 @@ function renderThumbnails(createThumbnails) {
     templateClone.querySelector('.picture__likes').textContent = likes;
     templateClone.querySelector('.picture__comments').textContent = comments.length;
     thumbnailFragment.append(templateClone);
+    templateClone.addEventListener('click', () => {
+      openFullSizePhoto({url, description, likes, comments});
+    });
   });
   thumbnailContainer.append(thumbnailFragment);
 }
