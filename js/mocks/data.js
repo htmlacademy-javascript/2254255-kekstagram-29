@@ -59,7 +59,7 @@ function createComment() {
  * Функция для генерации описания фотографии.
  * @return {Object} - Объект с ключами id, url, description, likes и массивом comments
  */
-function createPhotoDescription() {
+function createPhoto() {
   const photoId = getPhotoId();
   return {
     id: photoId,
@@ -75,8 +75,8 @@ function createPhotoDescription() {
  * @param {number} photoAmount - Количество фотографий, значение по умолчанию PHOTO_AMOUNT
  * @return {Object} - Массив описаний фотографий длинной photoAmount
  */
-function createPhotoDescriptions(photoAmount = PHOTO_AMOUNT) {
-  return Array.from({length: photoAmount}, createPhotoDescription);
+function createPhotos(photoAmount = PHOTO_AMOUNT) {
+  return Array.from({length: photoAmount}, createPhoto);
 }
 
-export {createPhotoDescriptions};
+export {createPhotos};

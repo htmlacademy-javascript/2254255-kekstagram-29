@@ -1,3 +1,4 @@
-import {pictureCreation} from './thumbnail-render.js';
+import {createPhotos} from './mocks/data.js';
+import {renderThumbnails} from './render-thumbnail.js';
 
-pictureCreation();
+renderThumbnails(createPhotos);
