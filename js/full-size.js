@@ -1,4 +1,4 @@
-import {isEscapeKey} from './mocks/util.js';
+import {isEscapeKey} from './util.js';
 
 const fullSizePhoto = document.querySelector('.big-picture');
 const closeButton = fullSizePhoto.querySelector('.big-picture__cancel');
@@ -17,6 +17,7 @@ function onCloseButtonClick() {
 }
 
 function renderComments(comments) {
+  commentsList.innerHTML = '';
   const commentsListFragment = document.createDocumentFragment();
   comments.forEach(({avatar, name, message}) => {
     const comment = commentItem.cloneNode(true);
@@ -34,7 +35,7 @@ function openFullSizePhoto({url, likes, description, comments}) {
   document.body.classList.add('overflow-hidden');
   document.addEventListener('keydown', onDocumentKeydown);
   closeButton.addEventListener('click', onCloseButtonClick);
-  fullSizePhoto.querySelector('.big-picture__img').src = url;
+  fullSizePhoto.querySelector('.big-picture__img img').src = url;
   fullSizePhoto.querySelector('.likes-count').textContent = likes;
   fullSizePhoto.querySelector('.comments-count').textContent = comments.length;
   renderComments(comments);

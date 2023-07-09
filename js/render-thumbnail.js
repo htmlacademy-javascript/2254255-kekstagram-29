@@ -8,9 +8,9 @@ const thumbnailContainer = document.querySelector('.pictures');
 /**
  * Функция для отрисовки миниатюр.
  */
-function renderThumbnails(createThumbnails) {
+function renderThumbnails(thumbnails) {
   const thumbnailFragment = document.createDocumentFragment();
-  createThumbnails().forEach(({url, description, likes, comments}) => {
+  thumbnails.forEach(({url, description, likes, comments}) => {
     const templateClone = thumbnailTemplate.cloneNode(true);
     const templateCloneImg = templateClone.querySelector('.picture__img');
     templateCloneImg.src = url;
