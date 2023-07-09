@@ -4,6 +4,10 @@ const fullSizePhoto = document.querySelector('.big-picture');
 const closeButton = fullSizePhoto.querySelector('.big-picture__cancel');
 const commentsList = fullSizePhoto.querySelector('.social__comments');
 const commentItem = commentsList.querySelector('.social__comment');
+const loadButton = fullSizePhoto.querySelector('.social__comments-loader');
+const commentsCount = fullSizePhoto.querySelector('.social__comment-count');
+const commentsModifier = 5;
+let commentsAmount = commentsModifier;
 
 /**
  * Функция для закрытия полноразмерной фотографии при нажатии клавиши Escape.
@@ -36,9 +40,37 @@ function renderComments(comments) {
     commentPicture.src = avatar;
     commentPicture.alt = name;
     comment.querySelector('.social__text').innerText = message;
+    comment.classList.add('hidden');
     commentsList.append(comment);
   });
   commentsList.append(commentsListFragment);
+  displayComments(comments);
+}
+
+/**
+ * Функция для отображения новой группы комментариев на страницу.
+ */
+function loadMore() {
+  const comments = commentsList.children;
+  commentsAmount += commentsModifier;
+  displayComments(comments);
+}
+
+/**
+ * Функция для увеличения счётчика и количества отображаемых комментариев.
+ * @param {Object[]} comments - массив комментариев
+ */
+function displayComments(comments) {
+  if (commentsAmount >= comments.length) {
+    commentsAmount = comments.length;
+    loadButton.classList.add('hidden');
+  } else {
+    loadButton.classList.remove('hidden');
+  }
+  commentsCount.innerHTML = `${commentsAmount} из <span class="comments-count">${comments.length}</span> комментариев`;
+  for (let i = 0; i < commentsAmount; i++) {
+    // comments[i].classList.remove('hidden'); при выполнении начинается бесконечный цикл, класс не удаляется
+  }
 }
 
 /**
@@ -52,9 +84,9 @@ function openFullSizePhoto({url, likes, description, comments}) {
   closeButton.addEventListener('click', onCloseButtonClick);
   fullSizePhoto.querySelector('.big-picture__img img').src = url;
   fullSizePhoto.querySelector('.likes-count').textContent = likes;
-  fullSizePhoto.querySelector('.comments-count').textContent = comments.length;
-  renderComments(comments);
   fullSizePhoto.querySelector('.social__caption').textContent = description;
+  renderComments(comments);
+  loadButton.addEventListener('click', loadMore);
 }
 
 /**
@@ -65,6 +97,8 @@ function closeFullSizePhoto() {
   document.body.classList.remove('overflow-hidden');
   document.removeEventListener('keydown', onDocumentKeydown);
   closeButton.removeEventListener('click', onCloseButtonClick);
+  loadButton.removeEventListener('click', loadMore);
+  commentsAmount = commentsModifier;
 }
 
 export {openFullSizePhoto};
