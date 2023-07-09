@@ -7,6 +7,7 @@ const thumbnailContainer = document.querySelector('.pictures');
 
 /**
  * Функция для отрисовки миниатюр.
+ * @param {Object[]} thumbnails - Массив данных о миниатюрах, обязательно наличие ключей url, description, likes, comments
  */
 function renderThumbnails(thumbnails) {
   const thumbnailFragment = document.createDocumentFragment();

@@ -5,6 +5,10 @@ const closeButton = fullSizePhoto.querySelector('.big-picture__cancel');
 const commentsList = fullSizePhoto.querySelector('.social__comments');
 const commentItem = commentsList.querySelector('.social__comment');
 
+/**
+ * Функция для закрытия полноразмерной фотографии при нажатии клавиши Escape.
+ * @param {key} evt - нажатая клавиша
+ */
 function onDocumentKeydown(evt) {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
@@ -12,10 +16,17 @@ function onDocumentKeydown(evt) {
   }
 }
 
+/**
+ * Функция для закрытия полноразмерной фотографии при клике на кнопку закрытия.
+ */
 function onCloseButtonClick() {
   closeFullSizePhoto();
 }
 
+/**
+ * Функция для добавления созданных комментариев на страницу.
+ * @param {Object[]} comments - массив комментариев
+ */
 function renderComments(comments) {
   commentsList.innerHTML = '';
   const commentsListFragment = document.createDocumentFragment();
@@ -30,6 +41,10 @@ function renderComments(comments) {
   commentsList.append(commentsListFragment);
 }
 
+/**
+ * Функция для открытия полноразмерной фотографии.
+ * @param {Object[]} url, likes, description, comments - массив миниатюр с обязательными ключами url, likes, description, comments
+ */
 function openFullSizePhoto({url, likes, description, comments}) {
   fullSizePhoto.classList.remove('hidden');
   document.body.classList.add('overflow-hidden');
@@ -42,6 +57,9 @@ function openFullSizePhoto({url, likes, description, comments}) {
   fullSizePhoto.querySelector('.social__caption').textContent = description;
 }
 
+/**
+ * Функция для закрытия полноразмерной фотографии.
+ */
 function closeFullSizePhoto() {
   fullSizePhoto.classList.add('hidden');
   document.body.classList.remove('overflow-hidden');
