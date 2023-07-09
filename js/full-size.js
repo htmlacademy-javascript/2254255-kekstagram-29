@@ -1,12 +1,12 @@
 import {isEscapeKey} from './util.js';
 
+const COMMENTS_MODIFIER = 5;
 const fullSizePhoto = document.querySelector('.big-picture');
 const closeButton = fullSizePhoto.querySelector('.big-picture__cancel');
 const commentsList = fullSizePhoto.querySelector('.social__comments');
 const commentItem = commentsList.querySelector('.social__comment');
 const loadButton = fullSizePhoto.querySelector('.social__comments-loader');
 const commentsCount = fullSizePhoto.querySelector('.social__comment-count');
-const COMMENTS_MODIFIER = 5;
 let commentsAmount = COMMENTS_MODIFIER;
 
 /**
