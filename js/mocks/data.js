@@ -1,4 +1,4 @@
-import {getRandomInteger, getRandomArrayElement, getIdGenerator} from './util.js';
+import {getRandomInteger, getRandomArrayElement, getIdGenerator} from './util-mocks.js';
 
 const MESSAGES = [
   'Всё отлично!',
