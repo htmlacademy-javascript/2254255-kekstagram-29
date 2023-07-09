@@ -6,8 +6,8 @@ const commentsList = fullSizePhoto.querySelector('.social__comments');
 const commentItem = commentsList.querySelector('.social__comment');
 const loadButton = fullSizePhoto.querySelector('.social__comments-loader');
 const commentsCount = fullSizePhoto.querySelector('.social__comment-count');
-const commentsModifier = 5;
-let commentsAmount = commentsModifier;
+const COMMENTS_MODIFIER = 5;
+let commentsAmount = COMMENTS_MODIFIER;
 
 /**
  * Функция для закрытия полноразмерной фотографии при нажатии клавиши Escape.
@@ -25,6 +25,33 @@ function onDocumentKeydown(evt) {
  */
 function onCloseButtonClick() {
   closeFullSizePhoto();
+}
+
+/**
+ * Функция для отображения новой группы комментариев на страницу.
+ */
+function onLoadButtonClick() {
+  const comments = commentsList.children;
+  commentsAmount += COMMENTS_MODIFIER;
+  displayComments(comments);
+}
+
+/**
+ * Функция для увеличения счётчика и количества отображаемых комментариев.
+ * @param {Object[]} comments - массив комментариев
+ */
+function displayComments(comments) {
+  if (commentsAmount >= comments.length) {
+    commentsAmount = comments.length;
+    loadButton.classList.add('hidden');
+  } else {
+    loadButton.classList.remove('hidden');
+  }
+  commentsCount.innerHTML = `${commentsAmount} из <span class="comments-count">${comments.length}</span> комментариев`;
+  const commentItems = commentsList.querySelectorAll('.social__comment');
+  for (let i = 0; i < commentsAmount; i++) {
+    commentItems[i].classList.remove('hidden');
+  }
 }
 
 /**
@@ -48,32 +75,6 @@ function renderComments(comments) {
 }
 
 /**
- * Функция для отображения новой группы комментариев на страницу.
- */
-function loadMore() {
-  const comments = commentsList.children;
-  commentsAmount += commentsModifier;
-  displayComments(comments);
-}
-
-/**
- * Функция для увеличения счётчика и количества отображаемых комментариев.
- * @param {Object[]} comments - массив комментариев
- */
-function displayComments(comments) {
-  if (commentsAmount >= comments.length) {
-    commentsAmount = comments.length;
-    loadButton.classList.add('hidden');
-  } else {
-    loadButton.classList.remove('hidden');
-  }
-  commentsCount.innerHTML = `${commentsAmount} из <span class="comments-count">${comments.length}</span> комментариев`;
-  for (let i = 0; i < commentsAmount; i++) {
-    // comments[i].classList.remove('hidden'); при выполнении начинается бесконечный цикл, класс не удаляется
-  }
-}
-
-/**
  * Функция для открытия полноразмерной фотографии.
  * @param {Object[]} url, likes, description, comments - массив миниатюр с обязательными ключами url, likes, description, comments
  */
@@ -86,7 +87,7 @@ function openFullSizePhoto({url, likes, description, comments}) {
   fullSizePhoto.querySelector('.likes-count').textContent = likes;
   fullSizePhoto.querySelector('.social__caption').textContent = description;
   renderComments(comments);
-  loadButton.addEventListener('click', loadMore);
+  loadButton.addEventListener('click', onLoadButtonClick);
 }
 
 /**
@@ -97,8 +98,8 @@ function closeFullSizePhoto() {
   document.body.classList.remove('overflow-hidden');
   document.removeEventListener('keydown', onDocumentKeydown);
   closeButton.removeEventListener('click', onCloseButtonClick);
-  loadButton.removeEventListener('click', loadMore);
-  commentsAmount = commentsModifier;
+  loadButton.removeEventListener('click', onLoadButtonClick);
+  commentsAmount = COMMENTS_MODIFIER;
 }
 
 export {openFullSizePhoto};
