@@ -7,4 +7,13 @@ function isEscapeKey(evt) {
   return evt.key === 'Escape';
 }
 
-export {isEscapeKey};
+/**
+ * Функция для проверки правописания хэш-тегов.
+ * @param {string} data - проверяемый хэш-тег
+ * @return {boolean} - если хэш-тег написан правильно, возвращает true, иначе false
+ */
+function isAcceptableValue(data) {
+  return /^#[a-zа-яё0-9]{1,19}$/i.test(data);
+}
+
+export {isEscapeKey, isAcceptableValue};
