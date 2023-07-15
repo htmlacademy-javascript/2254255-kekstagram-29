@@ -395,7 +395,7 @@ main {
 
 
 /**
- * Кнопки изменения масштаба изобраения
+ * Кнопки изменения масштаба изображения
  */
 
 .img-upload__scale {
@@ -515,7 +515,7 @@ main {
 
   background-color: #ffffff;
 }
-
+position
 .img-upload__preview img {
   display: block;
   max-width: 600px;
