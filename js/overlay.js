@@ -62,6 +62,9 @@ function onFormSubmit(evt) {
   }
 }
 
+/**
+ * Функция для запуска валидации.
+ */
 function addPristineValidation() {
   uploadForm.addEventListener('submit', onFormSubmit);
   pristine.addValidator(hashtagsText, validateNumberOfHashtags, `нельзя указать больше ${MAX_HASHTAGS} хэш-тегов`);
