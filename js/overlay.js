@@ -56,9 +56,17 @@ function validateRepeatedHashtags(value) {
  * Функция для закрытия запуска валидации pristine.
  * @param {submit} evt - отправка формы
  */
-function pristineValidation(evt) {
-  evt.preventDefault();
-  pristine.validate();
+function onFormSubmit(evt) {
+  if (!pristine.validate()) {
+    evt.preventDefault();
+  }
+}
+
+function addPristineValidation() {
+  uploadForm.addEventListener('submit', onFormSubmit);
+  pristine.addValidator(hashtagsText, validateNumberOfHashtags, `нельзя указать больше ${MAX_HASHTAGS} хэш-тегов`);
+  pristine.addValidator(hashtagsText, validateInvalidHashtag, 'недопустимый хэш-тег');
+  pristine.addValidator(hashtagsText, validateRepeatedHashtags, 'хэш-теги не должны повторяться');
 }
 
 /**
@@ -84,16 +92,11 @@ function onCloseButtonClick() {
 /**
  * Функция для открытия подложки.
  */
-function openOverlay() {
+function onFormChange() {
   uploadOverlay.classList.remove('hidden');
   document.body.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeydown);
   closeButton.addEventListener('click', onCloseButtonClick);
-  uploadInput.removeEventListener('change', openOverlay);
-  uploadForm.addEventListener('submit', pristineValidation);
-  pristine.addValidator(hashtagsText, validateNumberOfHashtags, `нельзя указать больше ${MAX_HASHTAGS} хэш-тегов`);
-  pristine.addValidator(hashtagsText, validateInvalidHashtag, 'недопустимый хэш-тег');
-  pristine.addValidator(hashtagsText, validateRepeatedHashtags, 'хэш-теги не должны повторяться');
 }
 
 /**
@@ -104,16 +107,16 @@ function closeOverlay() {
   document.body.classList.remove('modal-open');
   document.removeEventListener('keydown', onDocumentKeydown);
   closeButton.removeEventListener('click', onCloseButtonClick);
-  uploadInput.addEventListener('change', openOverlay);
   pristine.reset();
-  uploadForm.removeEventListener('submit', pristineValidation);
+  uploadForm.reset();
 }
 
 /**
  * Функция для запуска работы с подложкой.
  */
-function overlayScript() {
-  uploadInput.addEventListener('change', openOverlay);
+function addInputListenerAndValidation() {
+  uploadInput.addEventListener('change', onFormChange);
+  addPristineValidation();
 }
 
-export {overlayScript};
+export {addInputListenerAndValidation};
