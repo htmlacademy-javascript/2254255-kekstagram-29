@@ -395,7 +395,7 @@ main {
 
 
 /**
- * Кнопки изменения масштаба изобраения
+ * Кнопки изменения масштаба изображения
  */
 
 .img-upload__scale {
@@ -515,7 +515,7 @@ main {
 
   background-color: #ffffff;
 }
-
+position
 .img-upload__preview img {
   display: block;
   max-width: 600px;
@@ -708,6 +708,17 @@ main {
   color: #000000;
 
   border-radius: 5px;
+}
+
+.img-upload__field-wrapper--error {
+  position: relative;
+  margin-top: -20px;
+  margin-left: 70px;
+  z-index: 2;
+
+  color: #ff4e4e;
+  text-align: left;
+  font-weight: 700;
 }
 
 
