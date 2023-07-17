@@ -1,6 +1,7 @@
-import {isEscapeKey, isAcceptableValue} from './util.js';
+import {HASHTAGS_LIMIT} from './const-settings.js';
+import {isEscapeKey} from './util.js';
+import {resetScale, initScale} from './user-photo-modify.js';
 
-const MAX_HASHTAGS = 5;
 const uploadForm = document.querySelector('.img-upload__form');
 const uploadInput = uploadForm.querySelector('.img-upload__input');
 const uploadOverlay = uploadForm.querySelector('.img-upload__overlay');
@@ -25,6 +26,15 @@ function normalizeHashtags(tags) {
 }
 
 /**
+ * Функция для проверки правописания хэш-тегов.
+ * @param {string} data - проверяемый хэш-тег
+ * @return {boolean} - если хэш-тег написан правильно, возвращает true, иначе false
+ */
+function isAcceptableValue(data) {
+  return /^#[a-zа-яё0-9]{1,19}$/i.test(data);
+}
+
+/**
  * Функция проверки введия невалидного хэш-тега
  * @param {string} value - текущее значение поля
  * @return {boolean} - перебираем хэш-теги на заданные условия, возвращаем true или false
@@ -39,7 +49,7 @@ function validateInvalidHashtag(value) {
  * @return {boolean} - перебираем хэш-теги на заданные условия, возвращаем true или false
  */
 function validateNumberOfHashtags(value) {
-  return normalizeHashtags(value).length <= MAX_HASHTAGS;
+  return normalizeHashtags(value).length <= HASHTAGS_LIMIT;
 }
 
 /**
@@ -67,7 +77,7 @@ function onFormSubmit(evt) {
  */
 function addPristineValidation() {
   uploadForm.addEventListener('submit', onFormSubmit);
-  pristine.addValidator(hashtagsText, validateNumberOfHashtags, `нельзя указать больше ${MAX_HASHTAGS} хэш-тегов`);
+  pristine.addValidator(hashtagsText, validateNumberOfHashtags, `нельзя указать больше ${HASHTAGS_LIMIT} хэш-тегов`);
   pristine.addValidator(hashtagsText, validateInvalidHashtag, 'недопустимый хэш-тег');
   pristine.addValidator(hashtagsText, validateRepeatedHashtags, 'хэш-теги не должны повторяться');
 }
@@ -112,14 +122,16 @@ function closeOverlay() {
   closeButton.removeEventListener('click', onCloseButtonClick);
   pristine.reset();
   uploadForm.reset();
+  resetScale();
 }
 
 /**
  * Функция для запуска работы с подложкой.
  */
-function addInputListenerAndValidation() {
+function addOverlayListenersAndValidation() {
   uploadInput.addEventListener('change', onFormChange);
   addPristineValidation();
+  initScale();
 }
 
-export {addInputListenerAndValidation};
+export {addOverlayListenersAndValidation};
