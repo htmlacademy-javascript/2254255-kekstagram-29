@@ -1,6 +1,6 @@
 import {HASHTAGS_LIMIT} from './const-settings.js';
 import {isEscapeKey} from './util.js';
-import {resetScale, initScale} from './user-photo-modify.js';
+import {initSliderAndScale, resetUserPhotoEffects} from './user-photo-modify.js';
 
 const uploadForm = document.querySelector('.img-upload__form');
 const uploadInput = uploadForm.querySelector('.img-upload__input');
@@ -35,16 +35,19 @@ function isAcceptableValue(data) {
 }
 
 /**
- * Функция проверки введия невалидного хэш-тега
+ * Функция проверки валидности хэш-тега
  * @param {string} value - текущее значение поля
  * @return {boolean} - перебираем хэш-теги на заданные условия, возвращаем true или false
  */
 function validateInvalidHashtag(value) {
+  if (value.length === 0) {
+    return true;
+  }
   return normalizeHashtags(value).every((tag) => isAcceptableValue(tag));
 }
 
 /**
- * Функция проверки превышено количество хэш-тегов
+ * Функция проверки числа хэш-тегов
  * @param {string} value - текущее значение поля
  * @return {boolean} - перебираем хэш-теги на заданные условия, возвращаем true или false
  */
@@ -110,6 +113,7 @@ function onFormChange() {
   document.body.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeydown);
   closeButton.addEventListener('click', onCloseButtonClick);
+  initSliderAndScale();
 }
 
 /**
@@ -120,9 +124,9 @@ function closeOverlay() {
   document.body.classList.remove('modal-open');
   document.removeEventListener('keydown', onDocumentKeydown);
   closeButton.removeEventListener('click', onCloseButtonClick);
+  resetUserPhotoEffects();
   pristine.reset();
   uploadForm.reset();
-  resetScale();
 }
 
 /**
@@ -131,7 +135,6 @@ function closeOverlay() {
 function addOverlayListenersAndValidation() {
   uploadInput.addEventListener('change', onFormChange);
   addPristineValidation();
-  initScale();
 }
 
 export {addOverlayListenersAndValidation};
