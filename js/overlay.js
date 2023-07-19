@@ -1,6 +1,7 @@
-import {isEscapeKey, isAcceptableValue} from './util.js';
+import {HASHTAGS_LIMIT} from './const-settings.js';
+import {isEscapeKey} from './util.js';
+import {initSliderAndScale, resetUserPhotoEffects} from './user-photo-modify.js';
 
-const MAX_HASHTAGS = 5;
 const uploadForm = document.querySelector('.img-upload__form');
 const uploadInput = uploadForm.querySelector('.img-upload__input');
 const uploadOverlay = uploadForm.querySelector('.img-upload__overlay');
@@ -25,21 +26,33 @@ function normalizeHashtags(tags) {
 }
 
 /**
- * Функция проверки введия невалидного хэш-тега
+ * Функция для проверки правописания хэш-тегов.
+ * @param {string} data - проверяемый хэш-тег
+ * @return {boolean} - если хэш-тег написан правильно, возвращает true, иначе false
+ */
+function isAcceptableValue(data) {
+  return /^#[a-zа-яё0-9]{1,19}$/i.test(data);
+}
+
+/**
+ * Функция проверки валидности хэш-тега
  * @param {string} value - текущее значение поля
  * @return {boolean} - перебираем хэш-теги на заданные условия, возвращаем true или false
  */
 function validateInvalidHashtag(value) {
+  if (value.length === 0) {
+    return true;
+  }
   return normalizeHashtags(value).every((tag) => isAcceptableValue(tag));
 }
 
 /**
- * Функция проверки превышено количество хэш-тегов
+ * Функция проверки числа хэш-тегов
  * @param {string} value - текущее значение поля
  * @return {boolean} - перебираем хэш-теги на заданные условия, возвращаем true или false
  */
 function validateNumberOfHashtags(value) {
-  return normalizeHashtags(value).length <= MAX_HASHTAGS;
+  return normalizeHashtags(value).length <= HASHTAGS_LIMIT;
 }
 
 /**
@@ -56,9 +69,20 @@ function validateRepeatedHashtags(value) {
  * Функция для закрытия запуска валидации pristine.
  * @param {submit} evt - отправка формы
  */
-function pristineValidation(evt) {
-  evt.preventDefault();
-  pristine.validate();
+function onFormSubmit(evt) {
+  if (!pristine.validate()) {
+    evt.preventDefault();
+  }
+}
+
+/**
+ * Функция для запуска валидации.
+ */
+function addPristineValidation() {
+  uploadForm.addEventListener('submit', onFormSubmit);
+  pristine.addValidator(hashtagsText, validateNumberOfHashtags, `нельзя указать больше ${HASHTAGS_LIMIT} хэш-тегов`);
+  pristine.addValidator(hashtagsText, validateInvalidHashtag, 'недопустимый хэш-тег');
+  pristine.addValidator(hashtagsText, validateRepeatedHashtags, 'хэш-теги не должны повторяться');
 }
 
 /**
@@ -84,16 +108,12 @@ function onCloseButtonClick() {
 /**
  * Функция для открытия подложки.
  */
-function openOverlay() {
+function onFormChange() {
   uploadOverlay.classList.remove('hidden');
   document.body.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeydown);
   closeButton.addEventListener('click', onCloseButtonClick);
-  uploadInput.removeEventListener('change', openOverlay);
-  uploadForm.addEventListener('submit', pristineValidation);
-  pristine.addValidator(hashtagsText, validateNumberOfHashtags, `нельзя указать больше ${MAX_HASHTAGS} хэш-тегов`);
-  pristine.addValidator(hashtagsText, validateInvalidHashtag, 'недопустимый хэш-тег');
-  pristine.addValidator(hashtagsText, validateRepeatedHashtags, 'хэш-теги не должны повторяться');
+  initSliderAndScale();
 }
 
 /**
@@ -104,16 +124,17 @@ function closeOverlay() {
   document.body.classList.remove('modal-open');
   document.removeEventListener('keydown', onDocumentKeydown);
   closeButton.removeEventListener('click', onCloseButtonClick);
-  uploadInput.addEventListener('change', openOverlay);
+  resetUserPhotoEffects();
   pristine.reset();
-  uploadForm.removeEventListener('submit', pristineValidation);
+  uploadForm.reset();
 }
 
 /**
  * Функция для запуска работы с подложкой.
  */
-function overlayScript() {
-  uploadInput.addEventListener('change', openOverlay);
+function addOverlayListenersAndValidation() {
+  uploadInput.addEventListener('change', onFormChange);
+  addPristineValidation();
 }
 
-export {overlayScript};
+export {addOverlayListenersAndValidation};

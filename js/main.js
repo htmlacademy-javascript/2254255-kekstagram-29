@@ -1,6 +1,6 @@
 import {createPhotos} from './mocks/data.js';
 import {renderThumbnails} from './render-thumbnail.js';
-import {overlayScript} from './overlay.js';
+import {addOverlayListenersAndValidation} from './overlay.js';
 
 renderThumbnails(createPhotos());
-overlayScript();
+addOverlayListenersAndValidation();

@@ -1,6 +1,6 @@
+import {COMMENTS_MODIFIER} from './const-settings.js';
 import {isEscapeKey} from './util.js';
 
-const COMMENTS_MODIFIER = 5;
 const fullSizePhoto = document.querySelector('.big-picture');
 const closeButton = fullSizePhoto.querySelector('.big-picture__cancel');
 const commentsList = fullSizePhoto.querySelector('.social__comments');
