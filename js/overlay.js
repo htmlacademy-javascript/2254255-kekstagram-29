@@ -1,4 +1,4 @@
-import {HASHTAGS_LIMIT} from './const-settings.js';
+import {HASHTAGS_LIMIT, ValidationMessages} from './const-settings.js';
 import {isEscapeKey} from './util.js';
 import {initSliderAndScale, resetUserPhotoEffects} from './user-photo-modify.js';
 
@@ -80,9 +80,9 @@ function onFormSubmit(evt) {
  */
 function addPristineValidation() {
   uploadForm.addEventListener('submit', onFormSubmit);
-  pristine.addValidator(hashtagsText, validateNumberOfHashtags, `нельзя указать больше ${HASHTAGS_LIMIT} хэш-тегов`);
-  pristine.addValidator(hashtagsText, validateInvalidHashtag, 'недопустимый хэш-тег');
-  pristine.addValidator(hashtagsText, validateRepeatedHashtags, 'хэш-теги не должны повторяться');
+  pristine.addValidator(hashtagsText, validateNumberOfHashtags, ValidationMessages.OUTNUBER);
+  pristine.addValidator(hashtagsText, validateInvalidHashtag, ValidationMessages.INVALID);
+  pristine.addValidator(hashtagsText, validateRepeatedHashtags, ValidationMessages.SIMILAR);
 }
 
 /**
