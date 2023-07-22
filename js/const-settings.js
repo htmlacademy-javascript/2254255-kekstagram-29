@@ -21,6 +21,14 @@ const ErrorText = {
   GET_DATA: 'Не удалось загрузить данные. Попробуйте обновить страницу',
   SEND_DATA: 'Не удалось отправить форму. Попробуйте ещё раз',
 };
+const SubmitButtonText = {
+  IDLE: 'Сохранить',
+  SENDING: 'Сохраняю...',
+};
+const CloseButton = {
+  ERROR: '.error__button',
+  SUCCESS: '.success__button',
+};
 
 const sliderEffects = {
   chrome: {
@@ -57,4 +65,4 @@ const sliderEffects = {
   },
 };
 
-export {COMMENTS_MODIFIER, HASHTAGS_LIMIT, SCALE_STEP, SCALE_MIN_VALUE, SCALE_MAX_VALUE, SCALE_DEFAULT_VALUE, ERROR_TIMEOUT, POST_URL, GET_URL, ValidationMessages, Method, ErrorText, sliderEffects};
+export {COMMENTS_MODIFIER, HASHTAGS_LIMIT, SCALE_STEP, SCALE_MIN_VALUE, SCALE_MAX_VALUE, SCALE_DEFAULT_VALUE, ERROR_TIMEOUT, POST_URL, GET_URL, ValidationMessages, Method, ErrorText, SubmitButtonText, CloseButton, sliderEffects};
