@@ -1,6 +1,8 @@
-import {HASHTAGS_LIMIT} from './const-settings.js';
+import {HASHTAGS_LIMIT, ValidationMessages, SubmitButtonText} from './const-settings.js';
 import {isEscapeKey} from './util.js';
 import {initSliderAndScale, resetUserPhotoEffects} from './user-photo-modify.js';
+import {sendData} from './api.js';
+import {showSuccessMessage, showErrorMessage} from './message.js';
 
 const uploadForm = document.querySelector('.img-upload__form');
 const uploadInput = uploadForm.querySelector('.img-upload__input');
@@ -8,6 +10,7 @@ const uploadOverlay = uploadForm.querySelector('.img-upload__overlay');
 const closeButton = uploadOverlay.querySelector('.img-upload__cancel');
 const hashtagsText = uploadOverlay.querySelector('.text__hashtags');
 const commentText = uploadOverlay.querySelector('.text__description');
+const submitButton = uploadOverlay.querySelector('.img-upload__submit');
 
 const pristine = new Pristine(uploadForm, {
   classTo: 'img-upload__field-wrapper',
@@ -66,23 +69,13 @@ function validateRepeatedHashtags(value) {
 }
 
 /**
- * Функция для закрытия запуска валидации pristine.
- * @param {submit} evt - отправка формы
- */
-function onFormSubmit(evt) {
-  if (!pristine.validate()) {
-    evt.preventDefault();
-  }
-}
-
-/**
  * Функция для запуска валидации.
  */
 function addPristineValidation() {
   uploadForm.addEventListener('submit', onFormSubmit);
-  pristine.addValidator(hashtagsText, validateNumberOfHashtags, `нельзя указать больше ${HASHTAGS_LIMIT} хэш-тегов`);
-  pristine.addValidator(hashtagsText, validateInvalidHashtag, 'недопустимый хэш-тег');
-  pristine.addValidator(hashtagsText, validateRepeatedHashtags, 'хэш-теги не должны повторяться');
+  pristine.addValidator(hashtagsText, validateNumberOfHashtags, ValidationMessages.OUTNUBER);
+  pristine.addValidator(hashtagsText, validateInvalidHashtag, ValidationMessages.INVALID);
+  pristine.addValidator(hashtagsText, validateRepeatedHashtags, ValidationMessages.SIMILAR);
 }
 
 /**
@@ -103,6 +96,22 @@ function onDocumentKeydown(evt) {
  */
 function onCloseButtonClick() {
   closeOverlay();
+}
+
+/**
+ * Функция для блокировки кнопки отправки фотографии.
+ */
+function blockSubmitButton() {
+  submitButton.disabled = true;
+  submitButton.textContent = SubmitButtonText.SENDING;
+}
+
+/**
+ * Функция для разблокировки кнопки отправки фотографии.
+ */
+function unblockSubmitButton() {
+  submitButton.disabled = false;
+  submitButton.textContent = SubmitButtonText.IDLE;
 }
 
 /**
@@ -127,6 +136,26 @@ function closeOverlay() {
   resetUserPhotoEffects();
   pristine.reset();
   uploadForm.reset();
+}
+
+/**
+ * Функция для отправки фотографии и сопутствующих данных на сервер.
+ * @param {submit} evt - отправка формы
+ */
+async function onFormSubmit(evt) {
+  evt.preventDefault();
+
+  if (pristine.validate()) {
+    blockSubmitButton();
+    try {
+      await sendData(new FormData(evt.target));
+      showSuccessMessage();
+      closeOverlay();
+    } catch {
+      showErrorMessage();
+    }
+    unblockSubmitButton();
+  }
 }
 
 /**
