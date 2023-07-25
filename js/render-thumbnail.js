@@ -8,15 +8,17 @@ const thumbnailContainer = document.querySelector('.pictures');
 const thumbnailFilter = document.querySelector('.img-filters');
 let currentFilter = FilterType.DEFAULT;
 
+/**
+ * Функция для смены режимов фильтра.
+ * @param {function} renderingThumbnails - генерация миниатюр
+ */
 function onClickFilter(renderingThumbnails) {
   thumbnailFilter.addEventListener('click', (evt) => {
-    if (evt.target.classList.contains('img-filters__button') && evt.target.id !== currentFilter) {
-
-      const clickBtn = evt.target;
-      const activeButton = thumbnailFilter.querySelector('.img-filters__button--active');
-      activeButton.classList.remove('img-filters__button--active');
-      clickBtn.classList.add('img-filters__button--active');
-      currentFilter = clickBtn.id;
+    if (evt.target.classList.contains('img-filters__button') && !evt.target.classList.contains('img-filters__button--active')) {
+      const clickButton = evt.target;
+      thumbnailFilter.querySelector('.img-filters__button--active').classList.remove('img-filters__button--active');
+      clickButton.classList.add('img-filters__button--active');
+      currentFilter = clickButton.id;
       renderingThumbnails();
     }
   });
@@ -72,7 +74,7 @@ function renderThumbnails(thumbnails) {
 }
 
 /**
- * Функция показывает фильтры
+ * Функция запускает работу кнопок фильтров.
  * @param {function} renderingThumbnails - генерация миниатюр
  */
 function showingFilteredThumbnails(renderingThumbnails) {
