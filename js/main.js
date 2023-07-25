@@ -1,10 +1,14 @@
-import {renderThumbnails} from './render-thumbnail.js';
+import {renderThumbnails, showingFilteredThumbnails} from './render-thumbnail.js';
 import {addOverlayListenersAndValidation} from './overlay.js';
 import {getData} from './api.js';
-import {showAlert} from './util.js';
+import {showAlert, debounce} from './util.js';
 
 try {
-  renderThumbnails(await getData());
+  const data = await getData();
+  renderThumbnails(data);
+  showingFilteredThumbnails(debounce(
+    () => renderThumbnails(data)
+  ));
 } catch (err) {
   showAlert(err.message);
 }

@@ -7,7 +7,14 @@ const SCALE_DEFAULT_VALUE = 100;
 const ERROR_TIMEOUT = 5000;
 const POST_URL = 'https://29.javascript.pages.academy/kekstagram';
 const GET_URL = `${POST_URL}/data`;
+const DEBOUNCE_TIMEOUT = 500;
+const RANDOM_THUMBNAILS_AMOUNT = 10;
 
+const FilterType = {
+  DEFAULT: 'filter-default',
+  RANDOM: 'filter-random',
+  DISCUSSED: 'filter-discussed',
+};
 const ValidationMessages = {
   OUTNUBER: `нельзя указать больше ${HASHTAGS_LIMIT} хэш-тегов`,
   INVALID: 'недопустимый хэш-тег',
@@ -65,4 +72,4 @@ const sliderEffects = {
   },
 };
 
-export {COMMENTS_MODIFIER, HASHTAGS_LIMIT, SCALE_STEP, SCALE_MIN_VALUE, SCALE_MAX_VALUE, SCALE_DEFAULT_VALUE, ERROR_TIMEOUT, POST_URL, GET_URL, ValidationMessages, Method, ErrorText, SubmitButtonText, CloseButton, sliderEffects};
+export {COMMENTS_MODIFIER, HASHTAGS_LIMIT, SCALE_STEP, SCALE_MIN_VALUE, SCALE_MAX_VALUE, SCALE_DEFAULT_VALUE, ERROR_TIMEOUT, POST_URL, GET_URL, DEBOUNCE_TIMEOUT, RANDOM_THUMBNAILS_AMOUNT, FilterType, ValidationMessages, Method, ErrorText, SubmitButtonText, CloseButton, sliderEffects};
