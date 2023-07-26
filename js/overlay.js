@@ -1,8 +1,8 @@
-import {HASHTAGS_LIMIT, FILE_TYPES, ValidationMessages, SubmitButtonText} from './const-settings.js';
+import {HASHTAGS_LIMIT, EXTENSIONS, ValidationMessages, SubmitButtonText, CloseButton} from './const-settings.js';
 import {isEscapeKey} from './util.js';
 import {initSliderAndScale, resetUserPhotoEffects} from './user-photo-modify.js';
 import {sendData} from './api.js';
-import {showSuccessMessage, showErrorMessage} from './message.js';
+import {showMessage} from './message.js';
 
 const uploadForm = document.querySelector('.img-upload__form');
 const uploadInput = uploadForm.querySelector('.img-upload__input');
@@ -12,6 +12,8 @@ const hashtagsText = uploadOverlay.querySelector('.text__hashtags');
 const commentText = uploadOverlay.querySelector('.text__description');
 const submitButton = uploadOverlay.querySelector('.img-upload__submit');
 const photoPreview = uploadOverlay.querySelector('.img-upload__preview img');
+const errorMessage = document.querySelector('#error').content.querySelector('.error');
+const successMessage = document.querySelector('#success').content.querySelector('.success');
 
 /**
  * Функция для отображения загруженного пользователем фото.
@@ -19,7 +21,7 @@ const photoPreview = uploadOverlay.querySelector('.img-upload__preview img');
 function displayUserPhoto() {
   const file = uploadInput.files[0];
   const fileName = file.name.toLowerCase();
-  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+  const matches = EXTENSIONS.some((it) => fileName.endsWith(it));
   if (matches) {
     photoPreview.src = URL.createObjectURL(file);
   }
@@ -73,7 +75,7 @@ function validateNumberOfHashtags(value) {
 
 /**
  * Функция проверки уникальности хэш-тегов
- * @param {string} value текущее значение поля
+ * @param {string} value - текущее значение поля
  * @return {boolean} - перебираем хэш-теги на заданные условия, возвращаем true или false
  */
 function validateRepeatedHashtags(value) {
@@ -112,19 +114,13 @@ function onCloseButtonClick() {
 }
 
 /**
- * Функция для блокировки кнопки отправки фотографии.
+ * Функция для блокировки и разблокировки кнопки отправки фотографии.
+ * @param {boolean} isBlock - блокирует кнопку
+ * @param {string} submitButtonText - текст для состояния кнопки
  */
-function blockSubmitButton() {
-  submitButton.disabled = true;
-  submitButton.textContent = SubmitButtonText.SENDING;
-}
-
-/**
- * Функция для разблокировки кнопки отправки фотографии.
- */
-function unblockSubmitButton() {
-  submitButton.disabled = false;
-  submitButton.textContent = SubmitButtonText.IDLE;
+function blockSubmitButton(isBlock, submitButtonText) {
+  submitButton.disabled = isBlock;
+  submitButton.textContent = submitButtonText;
 }
 
 /**
@@ -160,15 +156,15 @@ async function onFormSubmit(evt) {
   evt.preventDefault();
 
   if (pristine.validate()) {
-    blockSubmitButton();
+    blockSubmitButton(true, SubmitButtonText.SENDING);
     try {
       await sendData(new FormData(evt.target));
-      showSuccessMessage();
+      showMessage(successMessage, CloseButton.SUCCESS);
       closeOverlay();
     } catch {
-      showErrorMessage();
+      showMessage(errorMessage, CloseButton.ERROR);
     }
-    unblockSubmitButton();
+    blockSubmitButton(false, SubmitButtonText.IDLE);
   }
 }
 

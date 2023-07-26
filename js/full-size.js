@@ -47,7 +47,7 @@ function displayComments(comments) {
   } else {
     loadButton.classList.remove('hidden');
   }
-  commentsCount.innerHTML = `${commentsAmount} из <span class="comments-count">${comments.length}</span> комментариев`;
+  commentsCount.textContent = `${commentsAmount} из ${comments.length} комментариев`;
   const commentItems = commentsList.querySelectorAll('.social__comment');
   for (let i = 0; i < commentsAmount; i++) {
     commentItems[i].classList.remove('hidden');
