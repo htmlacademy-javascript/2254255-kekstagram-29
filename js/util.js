@@ -1,4 +1,4 @@
-import {ERROR_TIMEOUT} from './const-settings.js';
+import {ERROR_TIMEOUT, DEBOUNCE_TIMEOUT} from './const-settings.js';
 
 /**
  * Функция для проверки, является ли нажатая клавиша Escape.
@@ -10,7 +10,7 @@ function isEscapeKey(evt) {
 }
 
 /**
- * Функция для отрисовки сообщения об ошибке, которая показывается {ERROR_TIMEOUT} милисекунд.
+ * Функция для отрисовки сообщения об ошибке, которая показывается {ERROR_TIMEOUT} миллисекунд.
  * @param {string} message - текст ошибки
  */
 function showAlert(message) {
@@ -32,4 +32,18 @@ function showAlert(message) {
   }, ERROR_TIMEOUT);
 }
 
-export {isEscapeKey, showAlert};
+/**
+ * Функция для устранения дребезга, источник - https://www.freecodecamp.org/news/javascript-debounce-example.
+ * @param {function} callback - выполняемая функция
+ * @param {number} timeoutDelay - применяемая задержка выполнения функции, по умолчанию {DEBOUNCE_TIMEOUT} миллисекунд
+ */
+function debounce (callback, timeoutDelay = DEBOUNCE_TIMEOUT) {
+  let timeoutId;
+
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+}
+
+export {isEscapeKey, showAlert, debounce};
