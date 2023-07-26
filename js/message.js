@@ -1,8 +1,5 @@
-import {CloseButton} from './const-settings.js';
 import {isEscapeKey} from './util.js';
 
-const errorMessage = document.querySelector('#error').content.querySelector('.error');
-const successMessage = document.querySelector('#success').content.querySelector('.success');
 let message;
 
 /**
@@ -48,18 +45,4 @@ function showMessage(messageElement, closeButton) {
   message.querySelector(closeButton).addEventListener('click', closeMessage);
 }
 
-/**
- * Функция по показу сообщения об успешной загрузки изображения.
- */
-function showSuccessMessage() {
-  showMessage(successMessage, CloseButton.SUCCESS);
-}
-
-/**
- * Функция по показу сообщения с ошибкой загрузки изображения.
- */
-function showErrorMessage() {
-  showMessage(errorMessage, CloseButton.ERROR);
-}
-
-export {showSuccessMessage, showErrorMessage};
+export {showMessage};
