@@ -1,4 +1,4 @@
-import {HASHTAGS_LIMIT, ValidationMessages, SubmitButtonText} from './const-settings.js';
+import {HASHTAGS_LIMIT, FILE_TYPES, ValidationMessages, SubmitButtonText} from './const-settings.js';
 import {isEscapeKey} from './util.js';
 import {initSliderAndScale, resetUserPhotoEffects} from './user-photo-modify.js';
 import {sendData} from './api.js';
@@ -11,6 +11,19 @@ const closeButton = uploadOverlay.querySelector('.img-upload__cancel');
 const hashtagsText = uploadOverlay.querySelector('.text__hashtags');
 const commentText = uploadOverlay.querySelector('.text__description');
 const submitButton = uploadOverlay.querySelector('.img-upload__submit');
+const photoPreview = uploadOverlay.querySelector('.img-upload__preview img');
+
+/**
+ * Функция для отображения загруженного пользователем фото.
+ */
+function displayUserPhoto() {
+  const file = uploadInput.files[0];
+  const fileName = file.name.toLowerCase();
+  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+  if (matches) {
+    photoPreview.src = URL.createObjectURL(file);
+  }
+}
 
 const pristine = new Pristine(uploadForm, {
   classTo: 'img-upload__field-wrapper',
@@ -122,6 +135,7 @@ function onFormChange() {
   document.body.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeydown);
   closeButton.addEventListener('click', onCloseButtonClick);
+  displayUserPhoto();
   initSliderAndScale();
 }
 

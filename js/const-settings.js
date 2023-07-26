@@ -9,6 +9,7 @@ const POST_URL = 'https://29.javascript.pages.academy/kekstagram';
 const GET_URL = `${POST_URL}/data`;
 const DEBOUNCE_TIMEOUT = 500;
 const RANDOM_THUMBNAILS_AMOUNT = 10;
+const FILE_TYPES = ['.apng', '.avif', '.gif', '.jpg', '.jpeg', '.jfif', '.pjpeg', '.pjp', '.png', '.svg', '.webp',];
 
 const FilterType = {
   DEFAULT: 'filter-default',
@@ -72,4 +73,4 @@ const sliderEffects = {
   },
 };
 
-export {COMMENTS_MODIFIER, HASHTAGS_LIMIT, SCALE_STEP, SCALE_MIN_VALUE, SCALE_MAX_VALUE, SCALE_DEFAULT_VALUE, ERROR_TIMEOUT, POST_URL, GET_URL, DEBOUNCE_TIMEOUT, RANDOM_THUMBNAILS_AMOUNT, FilterType, ValidationMessages, Method, ErrorText, SubmitButtonText, CloseButton, sliderEffects};
+export {COMMENTS_MODIFIER, HASHTAGS_LIMIT, SCALE_STEP, SCALE_MIN_VALUE, SCALE_MAX_VALUE, SCALE_DEFAULT_VALUE, ERROR_TIMEOUT, POST_URL, GET_URL, DEBOUNCE_TIMEOUT, RANDOM_THUMBNAILS_AMOUNT, FILE_TYPES, FilterType, ValidationMessages, Method, ErrorText, SubmitButtonText, CloseButton, sliderEffects};
